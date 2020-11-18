@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import {
     Text,
     StyleSheet,
@@ -10,11 +10,25 @@ import {
     Dimensions
 } from 'react-native';
 
+import api from '../services/api';
+
 const screenHeight = Math.round(Dimensions.get('window').height);
 
 export default function Login({ navigation }){
-    function autentica(){
-        navigation.navigate('Produtos');
+    const [usuario,setUsuario] = useState('');
+    const [senha,setSenha] = useState('');
+
+    async function autentica(){
+        const response = await api.post('/autentica',{
+          usuario,
+          senha,
+        })
+        
+        if(response.data.token != ''){
+            navigation.navigate('Produtos');
+        }else{
+            alert('usuario ou senha invlidos')
+        }
     }
 
     return(
@@ -26,12 +40,14 @@ export default function Login({ navigation }){
                     autoCapitalize='none'
                     placeholder={'usuario@dominio.com.br'}
                     style={styles.textInput}
+                    onChangeText={setUsuario}
                 />
                 <TextInput
                     autoCapitalize='none'
                     secureTextEntry={true}
                     placeholder={'senha'}
                     style={styles.textInput}
+                    onChangeText={setSenha}
                 />
                 <TouchableOpacity
                     style={styles.button}
