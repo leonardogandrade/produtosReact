@@ -27,7 +27,7 @@ export default function Login({ navigation }){
         if(response.data.token != ''){
             navigation.navigate('Produtos');
         }else{
-            alert('usuario ou senha invlidos')
+            alert('usuario e/ou senha inválido(s)');
         }
     }
 
